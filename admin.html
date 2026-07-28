@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard - Nethra's Store</title>
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Admin Stylesheet -->
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="adminToastContainer"></div>
+
+  <!-- ADMIN AUTHENTICATION LOGIN SCREEN -->
+  <div id="adminAuthScreen" style="position: fixed; inset: 0; z-index: 99999; background: #0c0c0c; display: flex; align-items: center; justify-content: center; padding: 20px;">
+    <div style="max-width: 400px; width: 100%; background: #141414; border: 1px solid var(--color-gold, #c5a059); border-radius: 12px; padding: 35px 30px; text-align: center; box-shadow: 0 10px 40px rgba(0,0,0,0.8);">
+      <img src="logo.png" alt="Logo" style="width: 70px; height: 70px; object-fit: contain; margin-bottom: 15px; border-radius: 50%; border: 2px solid #c5a059; padding: 4px; background: #000;">
+      <h2 style="color: #fff; font-family: sans-serif; font-size: 1.5rem; margin-bottom: 6px;">NETHRA'S ADMIN</h2>
+      <p style="color: #aaa; font-size: 0.8rem; margin-bottom: 25px;">Enter Admin Password to Access Portal</p>
+
+      <form id="adminLoginForm">
+        <div style="margin-bottom: 18px; text-align: left;">
+          <label style="display: block; font-size: 0.75rem; color: #c5a059; text-transform: uppercase; font-weight: 600; margin-bottom: 6px;">Admin Username</label>
+          <input type="text" id="adminUserVal" class="admin-input" required value="admin" style="width: 100%; box-sizing: border-box;">
+        </div>
+        <div style="margin-bottom: 25px; text-align: left;">
+          <label style="display: block; font-size: 0.75rem; color: #c5a059; text-transform: uppercase; font-weight: 600; margin-bottom: 6px;">Admin Password</label>
+          <input type="password" id="adminPassVal" class="admin-input" required placeholder="Enter password" style="width: 100%; box-sizing: border-box;">
+        </div>
+        <button type="submit" class="primary-btn" style="width: 100%; padding: 12px; font-size: 0.9rem; font-weight: bold; background: #c5a059; border-color: #c5a059; color: #000; cursor: pointer;">
+          <i class="fa-solid fa-lock"></i> Unlock Admin Panel
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <div class="admin-wrapper" id="adminMainWrapper" style="display:none;">
+    <!-- Admin Sidebar -->
+    <aside class="admin-sidebar">
+      <div class="admin-brand">
+        <img src="logo.png" alt="Nethra's Logo" class="admin-logo">
+        <div class="brand-text">
+          <h2>NETHRA'S</h2>
+          <span>ADMIN PANEL</span>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <a href="#dashboard" class="sidebar-link active" data-tab="dashboard">
+          <i class="fa-solid fa-chart-line"></i> Dashboard
+        </a>
+        <a href="#products" class="sidebar-link" data-tab="products">
+          <i class="fa-solid fa-boxes-stacked"></i> Products
+        </a>
+        <a href="#orders" class="sidebar-link" data-tab="orders">
+          <i class="fa-solid fa-cart-flatbed"></i> Orders
+        </a>
+        <a href="#enquiries" class="sidebar-link" data-tab="enquiries">
+          <i class="fa-solid fa-envelope-open-text"></i> Enquiries
+        </a>
+        <a href="#payment" class="sidebar-link" data-tab="payment">
+          <i class="fa-solid fa-credit-card"></i> Payment Settings
+        </a>
+        <a href="#email-settings" class="sidebar-link" data-tab="email-settings">
+          <i class="fa-solid fa-paper-plane"></i> Email & SMTP Settings
+        </a>
+        <a href="#customers" class="sidebar-link" data-tab="customers">
+          <i class="fa-solid fa-users"></i> Customers
+        </a>
+        <a href="#content" class="sidebar-link" data-tab="content">
+          <i class="fa-solid fa-pen-to-square"></i> Page Content & Banners
+        </a>
+        <a href="#portfolio" class="sidebar-link" data-tab="portfolio">
+          <i class="fa-solid fa-images"></i> Portfolio Gallery
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <a href="index.html" class="visit-store-btn" target="_blank">
+          <i class="fa-solid fa-store"></i> Visit Live Store
+        </a>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <div class="admin-main">
+      <!-- Top Navbar -->
+      <header class="admin-header">
+        <div class="header-left">
+          <h1 id="pageTitle">Dashboard Overview</h1>
+        </div>
+        <div class="header-right">
+          <span class="db-status-badge" id="dbStatus">
+            <i class="fa-solid fa-database"></i> Supabase Connected
+          </span>
+          <div class="admin-user-profile">
+            <i class="fa-solid fa-user-shield"></i>
+            <span>Manager</span>
+          </div>
+          <button id="adminLogoutBtn" class="primary-btn" style="background:#d32f2f; border-color:#d32f2f; padding:6px 12px; font-size:0.75rem; cursor:pointer; margin-left:10px;">
+            <i class="fa-solid fa-right-from-bracket"></i> Logout Admin
+          </button>
+        </div>
+      </header>
+
+      <!-- Dynamic Tab Views -->
+      <main class="admin-content" id="adminContent">
+        <!-- 1. DASHBOARD VIEW -->
+        <section class="tab-pane active" id="paneDashboard">
+          <!-- Metric KPI Cards Grid -->
+          <div class="kpi-grid">
+            <div class="kpi-card">
+              <div class="kpi-icon gold"><i class="fa-solid fa-indian-rupee-sign"></i></div>
+              <div class="kpi-info">
+                <span>Total Revenue</span>
+                <h3 id="statRevenue">₹0.00</h3>
+              </div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-icon blue"><i class="fa-solid fa-bag-shopping"></i></div>
+              <div class="kpi-info">
+                <span>Total Orders</span>
+                <h3 id="statOrders">0</h3>
+              </div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-icon green"><i class="fa-solid fa-box"></i></div>
+              <div class="kpi-info">
+                <span>Active Products</span>
+                <h3 id="statProducts">0</h3>
+              </div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-icon red"><i class="fa-solid fa-triangle-exclamation"></i></div>
+              <div class="kpi-info">
+                <span>Out of Stock</span>
+                <h3 id="statOutOfStock">0</h3>
+              </div>
+            </div>
+          </div>
+
+          <!-- Recent Orders Panel & Low Stock Alert Grid -->
+          <div class="dashboard-grid">
+            <div class="panel-card">
+              <div class="panel-header">
+                <h3>Recent Customer Orders</h3>
+                <a href="#orders" class="panel-link-btn" onclick="switchTab('orders')">View All</a>
+              </div>
+              <div class="table-responsive">
+                <table class="admin-table">
+                  <thead>
+                    <tr>
+                      <th>Order ID</th>
+                      <th>Customer</th>
+                      <th>Total</th>
+                      <th>Payment</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody id="recentOrdersBody">
+                    <!-- Populated by admin.js -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="panel-card">
+              <div class="panel-header">
+                <h3>Quick Inventory Overview</h3>
+              </div>
+              <div id="quickStockList" class="quick-stock-list">
+                <!-- Populated by admin.js -->
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 2. PRODUCTS MANAGEMENT VIEW -->
+        <section class="tab-pane" id="paneProducts">
+          <div class="action-bar">
+            <div class="search-box">
+              <i class="fa-solid fa-magnifying-glass"></i>
+              <input type="text" id="productSearchInput" placeholder="Search products by title or category...">
+            </div>
+            <button class="primary-btn" id="openAddProductModalBtn">
+              <i class="fa-solid fa-plus"></i> Add New Product
+            </button>
+          </div>
+
+          <div class="panel-card">
+            <div class="table-responsive">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>Image</th>
+                    <th>Product Name</th>
+                    <th>Category</th>
+                    <th>Price</th>
+                    <th>Stock Status</th>
+                    <th>Rating</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="productsTableBody">
+                  <!-- Populated by admin.js -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- 3. ORDERS MANAGEMENT VIEW -->
+        <section class="tab-pane" id="paneOrders">
+          <div class="action-bar">
+            <div class="filter-group">
+              <label>Filter Status:</label>
+              <select id="orderStatusFilter" class="admin-select">
+                <option value="all">All Orders</option>
+                <option value="Pending">Pending</option>
+                <option value="Processing">Processing</option>
+                <option value="Dispatched">Dispatched</option>
+                <option value="Delivered">Delivered</option>
+                <option value="Cancelled">Cancelled</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="panel-card">
+            <div class="table-responsive">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>Order ID</th>
+                    <th>Date</th>
+                    <th>Customer Name</th>
+                    <th>Contact</th>
+                    <th>Payment</th>
+                    <th>Total</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="ordersTableBody">
+                  <!-- Populated by admin.js -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- 4. ENQUIRIES VIEW -->
+        <section class="tab-pane" id="paneEnquiries">
+          <div class="panel-card">
+            <div class="panel-header">
+              <h3>Customer Contact Messages</h3>
+            </div>
+            <div class="table-responsive">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Name</th>
+                    <th>Email / Phone</th>
+                    <th>Message</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody id="enquiriesTableBody">
+                  <!-- Populated by admin.js -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- 5. PAYMENT SETTINGS (UPI QR CODE) VIEW -->
+        <section class="tab-pane" id="panePayment">
+          <div class="panel-card" style="max-width: 700px;">
+            <div class="panel-header">
+              <h3>UPI & QR Code Payment Configuration</h3>
+            </div>
+            <form id="paymentSettingsForm">
+              <div class="form-group" style="margin-bottom:20px;">
+                <label style="display:flex; align-items:center; gap:10px; cursor:pointer;">
+                  <input type="checkbox" id="upiEnabled" style="accent-color:var(--color-gold); width:18px; height:18px;">
+                  <span style="font-size:0.9rem; font-weight:600; color:var(--color-text-white);">Enable UPI QR Code Payment</span>
+                </label>
+                <p style="font-size:0.75rem; color:var(--color-text-muted); margin-top:4px;">Allow customers to scan a UPI QR code during checkout and enter their Transaction UTR number.</p>
+              </div>
+
+              <div class="form-group">
+                <label for="upiId">UPI ID / Address *</label>
+                <input type="text" id="upiId" class="admin-input" required placeholder="e.g. 9629427700@upi or nethras@ybl">
+              </div>
+
+              <div class="form-group">
+                <label for="upiQrImage">UPI QR Code Image File / Path *</label>
+                <div style="display:flex; gap:10px; align-items:center;">
+                  <input type="text" id="upiQrImage" class="admin-input" required placeholder="e.g. logo.png or upload QR image">
+                  <label class="primary-btn" style="padding:9px 14px; font-size:0.75rem; cursor:pointer; white-space:nowrap; margin:0;">
+                    <i class="fa-solid fa-cloud-arrow-up"></i> Browse File
+                    <input type="file" id="upiQrImageFile" accept="image/*" style="display:none;">
+                  </label>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="merchantName">Merchant / Brand Name Displayed *</label>
+                <input type="text" id="merchantName" class="admin-input" required placeholder="Nethra's Mehandi & Accessories">
+              </div>
+
+              <div class="form-group" style="margin-bottom:25px;">
+                <label style="display:flex; align-items:center; gap:10px; cursor:pointer;">
+                  <input type="checkbox" id="codEnabled" style="accent-color:var(--color-gold); width:18px; height:18px;">
+                  <span style="font-size:0.9rem; font-weight:600; color:var(--color-text-white);">Enable Cash on Delivery (COD)</span>
+                </label>
+              </div>
+
+              <button type="submit" class="primary-btn">
+                <i class="fa-solid fa-floppy-disk"></i> Save Payment Settings
+              </button>
+            </form>
+          </div>
+        </section>
+
+        <!-- EMAIL & SMTP SETTINGS VIEW -->
+        <section class="tab-pane" id="paneEmail">
+          <div class="panel-card" style="max-width: 700px;">
+            <div class="panel-header">
+              <h3>SMTP Mail Gateway API Configuration</h3>
+            </div>
+            <form id="emailSettingsForm">
+              <div style="background:rgba(197,160,89,0.1); border:1px solid var(--color-gold); padding:15px; border-radius:6px; margin-bottom:20px;">
+                <p style="font-size:0.8rem; line-height:1.5; color:var(--color-gold); margin:0;">
+                  <i class="fa-solid fa-circle-info"></i> To send registration OTPs and customer enquire emails directly via client-side JavaScript, configure your SMTP server settings below. Gmail accounts require creating an <strong>App Password</strong> in Google Account Security.
+                </p>
+              </div>
+
+              <div class="form-group">
+                <label for="smtpHost">SMTP Server Host *</label>
+                <input type="text" id="smtpHost" class="admin-input" required placeholder="e.g. smtp.gmail.com or smtp-relay.brevo.com">
+              </div>
+
+              <div class="form-group">
+                <label for="smtpPort">SMTP Server Port *</label>
+                <input type="number" id="smtpPort" class="admin-input" required placeholder="e.g. 587 or 2525">
+              </div>
+
+              <div class="form-group">
+                <label for="smtpUsername">SMTP Username / Email Account *</label>
+                <input type="email" id="smtpUsername" class="admin-input" required placeholder="e.g. nethras0504@gmail.com">
+              </div>
+
+              <div class="form-group">
+                <label for="smtpPassword">SMTP Password / App Password / Secure Token *</label>
+                <input type="password" id="smtpPassword" class="admin-input" required placeholder="Enter password or token details">
+              </div>
+
+              <div class="form-group">
+                <label for="senderEmail">Sender From Email *</label>
+                <input type="email" id="senderEmail" class="admin-input" required placeholder="e.g. nethras0504@gmail.com">
+              </div>
+
+              <div class="form-group">
+                <label for="receiverEmail">Recipient Support / Admin Email *</label>
+                <input type="email" id="receiverEmail" class="admin-input" required placeholder="e.g. nethras0504@gmail.com">
+              </div>
+
+              <button type="submit" class="primary-btn">
+                <i class="fa-solid fa-floppy-disk"></i> Save Email & SMTP Settings
+              </button>
+            </form>
+          </div>
+
+          <div class="panel-card" style="max-width: 700px; margin-top: 30px;">
+            <div class="panel-header">
+              <h3>Admin Security Password</h3>
+            </div>
+            <form id="adminPasswordForm">
+              <div class="form-group">
+                <label for="newAdminPassword">New Admin Password *</label>
+                <input type="password" id="newAdminPassword" class="admin-input" required placeholder="Enter new password for Admin Panel access">
+              </div>
+              <button type="submit" class="primary-btn">
+                <i class="fa-solid fa-key"></i> Update Admin Password
+              </button>
+            </form>
+          </div>
+        </section>
+
+        <!-- 6. CUSTOMERS MANAGEMENT & USER ACTIVITY VIEW -->
+        <section class="tab-pane" id="paneCustomers">
+          <div class="panel-card">
+            <div class="panel-header">
+              <h3>Registered Customers & User Activity</h3>
+            </div>
+            <div class="table-responsive">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>Customer Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Orders Placed</th>
+                    <th>Total Spent</th>
+                    <th>Liked Products</th>
+                    <th>Joined Date</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="customersTableBody">
+                  <!-- Populated by admin.js -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- 7. WEBSITE PAGE CONTENT & BANNERS EDITOR VIEW -->
+        <section class="tab-pane" id="paneSiteContent">
+          <div class="panel-card" style="max-width: 850px;">
+            <div class="panel-header">
+              <h3>Website Pages & Banners Editor</h3>
+            </div>
+            <form id="siteContentForm">
+              <!-- Home Page Section -->
+              <div style="margin-bottom:25px; border-bottom:1px solid var(--color-border); padding-bottom:20px;">
+                <h4 style="font-size:0.95rem; color:var(--color-gold); text-transform:uppercase; margin-bottom:15px;"><i class="fa-solid fa-house"></i> Home Page Hero & Banners</h4>
+                <div class="form-group">
+                  <label for="cmsHeroTitle">Hero Title *</label>
+                  <input type="text" id="cmsHeroTitle" class="admin-input" required placeholder="Artistry in Every Stencil, Elegance in Every Accessory">
+                </div>
+                <div class="form-group">
+                  <label for="cmsHeroSubtitle">Hero Subtitle *</label>
+                  <textarea id="cmsHeroSubtitle" class="admin-input" rows="2" required placeholder="Discover handcrafted Mehandi stencils..."></textarea>
+                </div>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="cmsHeroImage">Hero Main Banner Image *</label>
+                    <div style="display:flex; gap:8px; align-items:center;">
+                      <input type="text" id="cmsHeroImage" class="admin-input" required placeholder="hero_banner_1784443131042.png">
+                      <label class="primary-btn" style="padding:8px 12px; font-size:0.7rem; cursor:pointer; white-space:nowrap; margin:0;">
+                        <i class="fa-solid fa-cloud-arrow-up"></i> Upload
+                        <input type="file" id="cmsHeroImageFile" accept="image/*" style="display:none;">
+                      </label>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="cmsAboutBanner">About Page Header Banner Image *</label>
+                    <div style="display:flex; gap:8px; align-items:center;">
+                      <input type="text" id="cmsAboutBanner" class="admin-input" required placeholder="about_banner_1784443157851.png">
+                      <label class="primary-btn" style="padding:8px 12px; font-size:0.7rem; cursor:pointer; white-space:nowrap; margin:0;">
+                        <i class="fa-solid fa-cloud-arrow-up"></i> Upload
+                        <input type="file" id="cmsAboutBannerFile" accept="image/*" style="display:none;">
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="cmsStencilBanner">Stencils Collection Banner *</label>
+                    <div style="display:flex; gap:8px; align-items:center;">
+                      <input type="text" id="cmsStencilBanner" class="admin-input" required placeholder="stencil_collection_1784443190864.png">
+                      <label class="primary-btn" style="padding:8px 12px; font-size:0.7rem; cursor:pointer; white-space:nowrap; margin:0;">
+                        <i class="fa-solid fa-cloud-arrow-up"></i> Upload
+                        <input type="file" id="cmsStencilBannerFile" accept="image/*" style="display:none;">
+                      </label>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="cmsAccBanner">Accessories Collection Banner *</label>
+                    <div style="display:flex; gap:8px; align-items:center;">
+                      <input type="text" id="cmsAccBanner" class="admin-input" required placeholder="acc_collection_1784443230924.png">
+                      <label class="primary-btn" style="padding:8px 12px; font-size:0.7rem; cursor:pointer; white-space:nowrap; margin:0;">
+                        <i class="fa-solid fa-cloud-arrow-up"></i> Upload
+                        <input type="file" id="cmsAccBannerFile" accept="image/*" style="display:none;">
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Shop Page Section -->
+              <div style="margin-bottom:25px; border-bottom:1px solid var(--color-border); padding-bottom:20px;">
+                <h4 style="font-size:0.95rem; color:var(--color-gold); text-transform:uppercase; margin-bottom:15px;"><i class="fa-solid fa-bag-shopping"></i> Shop Page Header & Promo Banner</h4>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="cmsShopTitle">Shop Title *</label>
+                    <input type="text" id="cmsShopTitle" class="admin-input" required placeholder="Explore Our Collection">
+                  </div>
+                  <div class="form-group">
+                    <label for="cmsShopBanner">Shop Promo Banner Image *</label>
+                    <div style="display:flex; gap:8px; align-items:center;">
+                      <input type="text" id="cmsShopBanner" class="admin-input" required placeholder="acc_collection_1784443230924.png">
+                      <label class="primary-btn" style="padding:8px 12px; font-size:0.7rem; cursor:pointer; white-space:nowrap; margin:0;">
+                        <i class="fa-solid fa-cloud-arrow-up"></i> Upload
+                        <input type="file" id="cmsShopBannerFile" accept="image/*" style="display:none;">
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="cmsShopSubtitle">Shop Subtitle *</label>
+                  <input type="text" id="cmsShopSubtitle" class="admin-input" required placeholder="Discover premium Mehandi stencils and handmade jewelry.">
+                </div>
+              </div>
+
+              <!-- About Us Page Section -->
+              <div style="margin-bottom:25px; border-bottom:1px solid var(--color-border); padding-bottom:20px;">
+                <h4 style="font-size:0.95rem; color:var(--color-gold); text-transform:uppercase; margin-bottom:15px;"><i class="fa-solid fa-address-card"></i> About Us Story & Photos</h4>
+                <div class="form-group">
+                  <label for="cmsAboutStory">Brand Story & Mission *</label>
+                  <textarea id="cmsAboutStory" class="admin-input" rows="3" required placeholder="At Nethras, we believe that beauty lies in intricate details..."></textarea>
+                </div>
+                <div class="form-group">
+                  <label for="cmsAboutCraftImage">Craftsmanship Feature Photo *</label>
+                  <input type="text" id="cmsAboutCraftImage" class="admin-input" required placeholder="media__1784442155434.png">
+                </div>
+              </div>
+
+              <!-- Contact & Social Media Section -->
+              <div style="margin-bottom:25px; border-bottom:1px solid var(--color-border); padding-bottom:20px;">
+                <h4 style="font-size:0.95rem; color:var(--color-gold); text-transform:uppercase; margin-bottom:15px;"><i class="fa-solid fa-phone"></i> Contact Details & Social Media</h4>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="cmsPhone1">Primary Contact Phone *</label>
+                    <input type="text" id="cmsPhone1" class="admin-input" required placeholder="+91 96294 27700">
+                  </div>
+                  <div class="form-group">
+                    <label for="cmsPhone2">Secondary Phone</label>
+                    <input type="text" id="cmsPhone2" class="admin-input" placeholder="+91 98779 61132">
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="cmsEmail">Contact Email *</label>
+                    <input type="email" id="cmsEmail" class="admin-input" required placeholder="nethras0504@gmail.com">
+                  </div>
+                  <div class="form-group">
+                    <label for="cmsAddress">Store Address *</label>
+                    <input type="text" id="cmsAddress" class="admin-input" required placeholder="Coimbatore, Tamil Nadu, India">
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="cmsInstaStencils">Instagram - Stencils Link *</label>
+                    <input type="text" id="cmsInstaStencils" class="admin-input" required placeholder="https://www.instagram.com/nethras_mehandi_stencils...">
+                  </div>
+                  <div class="form-group">
+                    <label for="cmsInstaAcc">Instagram - Accessories Link *</label>
+                    <input type="text" id="cmsInstaAcc" class="admin-input" required placeholder="https://www.instagram.com/nethras_accessories...">
+                  </div>
+                </div>
+              </div>
+
+              <!-- Footer Section -->
+              <div style="margin-bottom:25px;">
+                <h4 style="font-size:0.95rem; color:var(--color-gold); text-transform:uppercase; margin-bottom:15px;"><i class="fa-solid fa-shoe-prints"></i> Footer Brand Story</h4>
+                <div class="form-group">
+                  <label for="cmsFooterDesc">Footer Brand Description *</label>
+                  <textarea id="cmsFooterDesc" class="admin-input" rows="2" required placeholder="Nethra's brings you premium Mehandi stencils..."></textarea>
+                </div>
+              </div>
+
+              <button type="submit" class="primary-btn">
+                <i class="fa-solid fa-floppy-disk"></i> Save Page Content & Banners
+              </button>
+            </form>
+          </div>
+        </section>
+
+        <!-- 8. PORTFOLIO GALLERY MANAGER VIEW -->
+        <section class="tab-pane" id="panePortfolio">
+          <div class="panel-card">
+            <div class="panel-header" style="display:flex; justify-content:space-between; align-items:center;">
+              <h3>Portfolio Showcase Gallery</h3>
+              <button class="primary-btn" id="openAddPortfolioModalBtn">
+                <i class="fa-solid fa-plus-circle"></i> Add Portfolio Showcase Item
+              </button>
+            </div>
+            <div class="table-responsive">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>Image</th>
+                    <th>Showcase Title</th>
+                    <th>Category</th>
+                    <th>Description</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="portfolioTableBody">
+                  <!-- Populated by admin.js -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <!-- MODAL: ADD / EDIT PRODUCT -->
+  <div class="admin-modal" id="productModal">
+    <div class="modal-overlay"></div>
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 id="productModalTitle">Add New Product</h3>
+        <button class="modal-close" id="closeProductModalBtn">&times;</button>
+      </div>
+      <form id="productForm">
+        <input type="hidden" id="prodEditId">
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label for="prodName">Product Title *</label>
+            <input type="text" id="prodName" class="admin-input" required placeholder="e.g. Royal Bridal Mehandi Stencil">
+          </div>
+          <div class="form-group">
+            <label for="prodCategory">Category *</label>
+            <select id="prodCategory" class="admin-input" required>
+              <!-- Populated dynamically by admin.js -->
+            </select>
+            <div id="customCategoryWrapper" style="display:none; margin-top:8px;">
+              <input type="text" id="prodCustomCategory" class="admin-input" placeholder="Type new custom category name (e.g. Rings, Anklets)...">
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="prodPrice">Price (₹) *</label>
+            <input type="number" id="prodPrice" step="0.01" class="admin-input" required placeholder="399.00">
+          </div>
+          <div class="form-group">
+            <label for="prodStock">Stock Availability *</label>
+            <select id="prodStock" class="admin-input" required>
+              <option value="true">In Stock</option>
+              <option value="false">Out of Stock</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="prodImage">Product Image (Choose File or Enter Image Path) *</label>
+          <div style="display:flex; gap:10px; align-items:center;">
+            <input type="text" id="prodImage" class="admin-input" required placeholder="e.g. stencil_broad_1784443666338.png or upload image file">
+            <label class="primary-btn" style="padding:9px 14px; font-size:0.75rem; cursor:pointer; white-space:nowrap; margin:0;">
+              <i class="fa-solid fa-cloud-arrow-up"></i> Browse File
+              <input type="file" id="prodImageFile" accept="image/*" style="display:none;">
+            </label>
+          </div>
+          <div id="prodImagePreviewWrapper" style="margin-top:10px; display:none;">
+            <img id="prodImagePreview" src="" alt="Product Image Preview" style="max-height:100px; border-radius:6px; border:2px solid var(--color-gold);">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="prodDesc">Description *</label>
+          <textarea id="prodDesc" class="admin-input" rows="3" required placeholder="Write detailed description of the product..."></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="prodFeatures">Key Features (Comma Separated)</label>
+          <input type="text" id="prodFeatures" class="admin-input" placeholder="e.g. Reusable, Premium PVC, Easy to apply">
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="secondary-btn" id="cancelProductModalBtn">Cancel</button>
+          <button type="submit" class="primary-btn">Save Product</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODIAL: ORDER DETAILS -->
+  <div class="admin-modal" id="orderModal">
+    <div class="modal-overlay"></div>
+    <div class="modal-card wide">
+      <div class="modal-header">
+        <h3>Order Details <span id="modalOrderId" class="gold-badge"></span></h3>
+        <button class="modal-close" id="closeOrderModalBtn">&times;</button>
+      </div>
+      <div class="modal-body" id="orderDetailsBody">
+        <!-- Populated dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: CUSTOMER DETAILS -->
+  <div class="admin-modal" id="customerModal">
+    <div class="modal-overlay"></div>
+    <div class="modal-card wide">
+      <div class="modal-header">
+        <h3>Customer Details - <span id="modalCustomerName" class="gold-badge"></span></h3>
+        <button class="modal-close" id="closeCustomerModalBtn">&times;</button>
+      </div>
+      <div class="modal-body" id="customerDetailsBody">
+        <!-- Populated dynamically -->
+      </div>
+      <div class="modal-footer" style="padding:15px 25px; border-top:1px solid var(--color-border); display:flex; justify-content:flex-end; gap:10px;">
+        <button type="button" id="deleteCustomerModalBtn" class="primary-btn" style="background:#d32f2f; border-color:#d32f2f; padding:8px 16px; font-size:0.8rem;">
+          <i class="fa-solid fa-user-slash"></i> Delete Customer Account
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: PRODUCT PREVIEW -->
+  <div class="admin-modal" id="productPreviewModal">
+    <div class="modal-overlay"></div>
+    <div class="modal-card wide">
+      <div class="modal-header">
+        <h3>Product Preview</h3>
+        <button class="modal-close" id="closeProductPreviewModalBtn">&times;</button>
+      </div>
+      <div class="modal-body" id="productPreviewBody">
+        <!-- Populated dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: ADD PORTFOLIO ITEM -->
+  <div class="admin-modal" id="portfolioModal">
+    <div class="modal-overlay"></div>
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>Add Portfolio Showcase Item</h3>
+        <button class="modal-close" id="closePortfolioModalBtn">&times;</button>
+      </div>
+      <form id="portfolioForm">
+        <div class="form-group">
+          <label for="portTitle">Showcase Title *</label>
+          <input type="text" id="portTitle" class="admin-input" required placeholder="e.g. Royal Bridal Full Hand Stencil">
+        </div>
+        <div class="form-group">
+          <label for="portCategory">Category *</label>
+          <select id="portCategory" class="admin-input" required>
+            <option value="Mehandi Stencils">Mehandi Stencils</option>
+            <option value="Earrings">Earrings</option>
+            <option value="Necklaces">Necklaces</option>
+            <option value="Bangles">Bangles</option>
+            <option value="Korean Accessories">Korean Accessories</option>
+            <option value="Hair Accessories">Hair Accessories</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="portImage">Showcase Image *</label>
+          <div style="display:flex; gap:10px; align-items:center;">
+            <input type="text" id="portImage" class="admin-input" required placeholder="e.g. stencil_broad.png or upload image">
+            <label class="primary-btn" style="padding:9px 14px; font-size:0.75rem; cursor:pointer; white-space:nowrap; margin:0;">
+              <i class="fa-solid fa-cloud-arrow-up"></i> Browse File
+              <input type="file" id="portImageFile" accept="image/*" style="display:none;">
+            </label>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="portDesc">Short Description</label>
+          <input type="text" id="portDesc" class="admin-input" placeholder="e.g. Royal bridal stencil design with intricate patterns.">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="secondary-btn" id="cancelPortfolioModalBtn">Cancel</button>
+          <button type="submit" class="primary-btn">Add Showcase Item</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://smtpjs.com/v3/smtp.js"></script>
+  <script src="db.js"></script>
+  <script src="products.js"></script>
+  <script src="admin.js"></script>
+</body>
+</html>
