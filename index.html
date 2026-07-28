@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nethra's - Mehandi Stencils & Handmade Accessories</title>
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- Top Contact & Social Bar -->
+  <div class="top-bar">
+    <div class="container">
+      <div class="top-bar-contact">
+        <span><i class="fa-solid fa-phone"></i> +91 96294 27700, 98779 61132</span>
+        <span><i class="fa-solid fa-envelope"></i> nethras0504@gmail.com</span>
+      </div>
+      <div class="top-bar-social">
+        <a href="https://www.instagram.com/nethras_mehandi_stencils?igsh=MTgycGwyanl6Zjlwdw==" target="_blank" rel="noopener noreferrer" title="Mehandi Stencils Instagram"><i class="fa-brands fa-instagram"></i> Stencils</a>
+        <a href="https://www.instagram.com/nethras_accessories?igsh=MThvMHRhaW4weG9xNw==" target="_blank" rel="noopener noreferrer" title="Accessories Instagram"><i class="fa-brands fa-instagram"></i> Accessories</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Sticky Header -->
+  <header class="main-header">
+    <div class="container">
+      <nav class="navbar">
+        <!-- Left Navigation Links -->
+        <div class="nav-links left">
+          <a href="#/" class="nav-link-item" data-route="home">Home</a>
+          <a href="#/about" class="nav-link-item" data-route="about">About Us</a>
+          <a href="#/portfolio" class="nav-link-item" data-route="portfolio">Portfolio</a>
+        </div>
+
+        <!-- Center Logo -->
+        <div class="logo-container" id="navLogo">
+          <img class="header-logo" src="logo.png" alt="Nethra's Logo">
+        </div>
+
+        <!-- Right Navigation Links & Cart -->
+        <div class="nav-links right">
+          <a href="#/shop" class="nav-link-item" data-route="shop">Shop</a>
+          <a href="#/categories" class="nav-link-item" data-route="categories">Categories</a>
+          <a href="#/contact" class="nav-link-item" data-route="contact">Contact Us</a>
+          
+          <!-- User Account / Login Trigger -->
+          <a href="#/login" class="nav-link-item" id="navUserAccount" title="Account / Login">
+            <i class="fa-regular fa-user" style="font-size:1.1rem;"></i> <span id="navUserLabel">Login</span>
+          </a>
+
+          <!-- Cart Icon Trigger -->
+          <div class="cart-icon-wrapper" id="cartTrigger">
+            <i class="fa-solid fa-shopping-bag"></i>
+            <span class="cart-badge" id="cartBadgeCount">0</span>
+          </div>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Dynamic Application Container -->
+  <main id="app">
+    <!-- View content is injected here by app.js -->
+  </main>
+
+  <!-- Premium Footer -->
+  <footer class="main-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <!-- Brand Info Column -->
+        <div class="footer-col footer-brand">
+          <div class="footer-logo-wrapper">
+            <img class="header-logo" src="logo.png" alt="Nethra's Logo">
+          </div>
+          <p>Nethra's brings you premium Mehandi stencils and handmade accessories that add beauty to every moment. Crafted with love, designed to wow.</p>
+          <div class="footer-social-links">
+            <a href="https://www.instagram.com/nethras_mehandi_stencils?igsh=MTgycGwyanl6Zjlwdw==" target="_blank" rel="noopener noreferrer" title="Nethra's Mehandi Stencils Instagram"><i class="fa-brands fa-instagram"></i></a>
+            <a href="https://www.instagram.com/nethras_accessories?igsh=MThvMHRhaW4weG9xNw==" target="_blank" rel="noopener noreferrer" title="Nethra's Accessories Instagram"><i class="fa-brands fa-instagram"></i></a>
+            <a href="https://wa.me/919629427700" target="_blank" rel="noopener noreferrer" title="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+          </div>
+        </div>
+
+        <!-- Quick Links Column -->
+        <div class="footer-col">
+          <h3>Quick Links</h3>
+          <ul class="footer-links-list">
+            <li><a href="#/">Home</a></li>
+            <li><a href="#/about">About Us</a></li>
+            <li><a href="#/portfolio">Portfolio</a></li>
+            <li><a href="#/shop">Shop</a></li>
+            <li><a href="#/contact">Contact Us</a></li>
+            <li><a href="admin.html" target="_blank" style="color:var(--color-gold); font-weight:600;"><i class="fa-solid fa-user-shield"></i> Admin Panel</a></li>
+          </ul>
+        </div>
+
+        <!-- Categories Column -->
+        <div class="footer-col">
+          <h3>Categories</h3>
+          <ul class="footer-links-list">
+            <li><a href="#/shop?category=Mehandi+Stencils">Mehandi Stencils</a></li>
+            <li><a href="#/shop?category=Earrings">Earrings</a></li>
+            <li><a href="#/shop?category=Necklaces">Necklaces</a></li>
+            <li><a href="#/shop?category=Bangles">Bangles</a></li>
+            <li><a href="#/shop?category=Korean+Accessories">Korean Accessories</a></li>
+            <li><a href="#/shop?category=Hair+Accessories">Hair Accessories</a></li>
+          </ul>
+        </div>
+
+        <!-- Contact Column -->
+        <div class="footer-col">
+          <h3>Contact Us</h3>
+          <ul class="footer-contact-info">
+            <li>
+              <i class="fa-solid fa-phone"></i>
+              <div>
+                <p>+91 96294 27700</p>
+                <p>+91 98779 61132</p>
+              </div>
+            </li>
+            <li>
+              <i class="fa-solid fa-envelope"></i>
+              <div>
+                <p>nethras0504@gmail.com</p>
+              </div>
+            </li>
+            <li>
+              <i class="fa-solid fa-location-dot"></i>
+              <div>
+                <p>Coimbatore,<br>Tamil Nadu, India</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Footer Bottom Copyright Bar -->
+      <div class="footer-bottom" style="align-items: center;">
+        <p>&copy; 2026 Nethra's. All Rights Reserved.</p>
+        <a href="admin.html" target="_blank" class="admin-panel-bottom-btn">
+          <i class="fa-solid fa-lock"></i> Admin Panel
+        </a>
+        <p>Designed with <i class="fa-solid fa-heart" style="color: #c5a059;"></i> by Nethra's</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Application Scripts -->
+  <script src="https://smtpjs.com/v3/smtp.js"></script>
+  <script src="db.js"></script>
+  <script src="products.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
